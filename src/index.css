@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  line-height: 1.6;
+  color: #374151;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary hover:bg-accent text-white font-bold px-8 py-4 rounded-full 
+           transition-all duration-300 hover:-translate-y-0.5 shadow-lg;
+  }
+  
+  .card {
+    @apply bg-white rounded-3xl p-8 border border-gray-100 hover:shadow-xl transition-all;
+  }
+}
