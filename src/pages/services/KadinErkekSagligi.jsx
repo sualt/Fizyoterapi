@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import LightboxImage from '../../components/LightboxImage'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -26,7 +27,7 @@ export default function KadinErkekSagligi() {
           <p className="mt-5 text-gray-600 leading-relaxed">
             Pelvik taban kasları, hormonal süreçler ve yaşam kalitesini etkileyen kas
             problemlerine yönelik özel bir tedavi alanı. Kişiye özel ve güvenli bir
-            ortamda uzman fizyoterapi desteği.
+            ortamda kişiye özel fizyoterapi desteği.
           </p>
 
           <div className="mt-6 flex gap-3">
@@ -48,9 +49,10 @@ export default function KadinErkekSagligi() {
           animate={{ opacity: 1, scale: 1 }}
           className="rounded-3xl overflow-hidden shadow-2xl"
         >
-          <img
-            src="/images/kadin-hero.jpg"
-            className="w-full h-[420px] object-cover"
+          <LightboxImage
+            src="/fiziktedaviklinikpilates.jpg"
+            alt="Fizyoterapist eşliğinde klinik egzersiz"
+            className="aspect-[4/3] max-h-[420px] w-full bg-slate-50 object-contain"
           />
         </motion.div>
       </section>
@@ -104,14 +106,6 @@ export default function KadinErkekSagligi() {
             </motion.div>
           ))}
         </motion.div>
-      </section>
-
-      {/* IMAGE BANNER */}
-      <section className="mt-28">
-        <img
-          src="/images/kadin-banner.jpg"
-          className="w-full h-[320px] object-cover"
-        />
       </section>
 
       {/* TREATMENT APPROACH */}
@@ -190,17 +184,17 @@ export default function KadinErkekSagligi() {
       </section>
 
       {/* IMAGE GRID */}
-      <section className="max-w-6xl mx-auto px-4 mt-28 grid md:grid-cols-3 gap-4">
+      <section className="max-w-6xl mx-auto px-4 mt-28 grid md:grid-cols-2 gap-4">
         {[
-          "/images/kadin1.jpg",
-          "/images/kadin2.jpg",
-          "/images/kadin3.jpg"
+          "/bc.jpg",
+          "/ba.jpg"
         ].map((img, i) => (
-          <motion.img
+          <LightboxImage
             key={i}
-            whileHover={{ scale: 1.05 }}
-            className="h-72 w-full object-cover rounded-2xl shadow"
+            className="aspect-[4/3] w-full rounded-xl bg-slate-50 object-contain"
             src={img}
+            alt="Kadın sağlığı fizyoterapi değerlendirmesi"
+            loading="lazy"
           />
         ))}
       </section>

@@ -23,7 +23,6 @@ const links = [
   { to: '/',           label: 'Anasayfa' },
   { to: '/hakkimizda', label: 'Hakkımızda' },
   { type: 'dropdown',  data: servicesDropdown },
-  { to: '/galeri',     label: 'Galeri' },
   { to: '/iletisim',   label: 'İletişim' },
 ]
 
@@ -51,7 +50,7 @@ export default function Navbar() {
           <img src="/src/assets/logo.png" alt="Logo" className="h-11 w-auto" />
           <div className="flex flex-col leading-tight">
             <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
-              Uzman Fizyoterapist
+              Fizyoterapist
             </span>
             <span className="font-bold text-lg text-gray-900 group-hover:text-primary transition-colors">
               Hülya Yücedağ

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { FaPhone, FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaClock, FaEnvelope } from 'react-icons/fa'
-import { PHONE, WHATSAPP, EMAIL, INSTAGRAM, ADDRESS, MAPS_EMBED } from '../config'
+import { PHONE, WHATSAPP, EMAIL, INSTAGRAM, ADDRESS, MAPS_EMBED, WORKING_HOURS } from '../config'
 
 export default function Contact() {
   return (
@@ -69,8 +69,8 @@ export default function Contact() {
                 {
                   icon: <FaClock />,
                   label: 'Çalışma Saatleri',
-                  value: 'Pzt – Cmt  09:00 – 19:00',
-                  sub: 'Pazar Kapalı',
+                  value: WORKING_HOURS.weekdays,
+                  sub: WORKING_HOURS.sunday,
                   href: null,
                   color: 'bg-amber-50 text-amber-500',
                   hoverColor: '',

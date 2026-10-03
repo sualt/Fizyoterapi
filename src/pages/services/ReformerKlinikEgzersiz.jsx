@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import LightboxImage from '../../components/LightboxImage'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -48,9 +49,10 @@ export default function ReformerKlinikEgzersiz() {
           animate={{ opacity: 1, scale: 1 }}
           className="rounded-3xl overflow-hidden shadow-2xl"
         >
-          <img
-            src="/images/reformer-hero.jpg"
-            className="w-full h-[420px] object-cover"
+          <LightboxImage
+            src="/fiziktedaviklinikpilates.jpg"
+            alt="Klinik egzersiz uygulaması"
+            className="aspect-[4/3] max-h-[420px] w-full bg-slate-50 object-contain"
           />
         </motion.div>
       </section>
@@ -104,14 +106,6 @@ export default function ReformerKlinikEgzersiz() {
             </motion.div>
           ))}
         </motion.div>
-      </section>
-
-      {/* IMAGE BANNER */}
-      <section className="mt-28">
-        <img
-          src="/images/reformer-banner.jpg"
-          className="w-full h-[320px] object-cover"
-        />
       </section>
 
       {/* REFORMER ADVANTAGES */}
@@ -190,17 +184,17 @@ export default function ReformerKlinikEgzersiz() {
       </section>
 
       {/* IMAGE GRID */}
-      <section className="max-w-6xl mx-auto px-4 mt-28 grid md:grid-cols-3 gap-4">
+      <section className="max-w-6xl mx-auto px-4 mt-28 grid md:grid-cols-2 gap-4">
         {[
-          "/images/reformer1.jpg",
-          "/images/reformer2.jpg",
-          "/images/reformer3.jpg"
+          "/1.jpg",
+          "/af.jpg"
         ].map((img, i) => (
-          <motion.img
+          <LightboxImage
             key={i}
-            whileHover={{ scale: 1.05 }}
-            className="h-72 w-full object-cover rounded-2xl shadow"
+            className="aspect-[4/3] w-full rounded-xl bg-slate-50 object-contain"
             src={img}
+            alt="Klinik egzersiz uygulaması"
+            loading="lazy"
           />
         ))}
       </section>

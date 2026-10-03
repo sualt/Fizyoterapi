@@ -1,19 +1,15 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaComments, FaTimes, FaPaperPlane, FaRobot } from 'react-icons/fa'
-import { PHONE, WHATSAPP, ADDRESS, WORKING_HOURS } from '../config'
+import { FaComments, FaTimes, FaPaperPlane, FaRobot, FaWhatsapp } from 'react-icons/fa'
+import { WHATSAPP } from '../config'
+import { getBotReply } from '../utils/chatbot'
 
-const SYSTEM_PROMPT = `Sen bir fizyoterapi kliniğinin yardımcı asistanısın.
-
-Klinik bilgileri:
-- Telefon: ${PHONE}
-- WhatsApp: https://wa.me/${WHATSAPP}
-- Adres: ${ADDRESS}
-- Çalışma saatleri: ${WORKING_HOURS.weekdays}, ${WORKING_HOURS.sunday}
-
-Sunulan hizmetler: Fizik tedavi ve klinik pilates, manuel terapi, reformer klinik egzersiz, sporcu rehabilitasyonu, migren ve baş ağrısı tedavisi, bruksizm ve TME tedavisi, recovery ve medikal masaj, kadın ve erkek sağlığı (pelvik taban), omurga sağlığı ve skolyoz.
-
-Görevin: Hastaların sorularını Türkçe, samimi ve kısa biçimde yanıtlamak. Tıbbi tanı koymaktan kaçın. Randevu için WhatsApp veya telefonu öner. Yanıtların 3-4 cümleyi geçmesin.`
+const quickQuestions = [
+  'Fiyatlar nedir?',
+  'Randevu nasıl alınır?',
+  'Bel ağrısı tedavisi var mı?',
+  'İletişim bilgileri',
+]
 
 export default function ChatBot() {
   const [open, setOpen]         = useState(false)
@@ -31,37 +27,19 @@ export default function ChatBot() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  const send = async () => {
-    if (!input.trim() || loading) return
+  const send = async (messageText = input) => {
+    const trimmed = messageText.trim()
+    if (!trimmed || loading) return
 
-    const userMsg = { role: 'user', content: input.trim() }
+    const userMsg = { role: 'user', content: trimmed }
     setMessages(prev => [...prev, userMsg])
     setInput('')
     setLoading(true)
 
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: [...messages, userMsg].map(m => ({
-            role: m.role,
-            content: m.content,
-          })),
-        }),
-      })
-
-      const data  = await res.json()
-      const reply = data.content?.[0]?.text || 'Üzgünüm, şu an cevap veremiyorum.'
+      const reply = getBotReply(trimmed)
+      await new Promise(resolve => setTimeout(resolve, 250))
       setMessages(prev => [...prev, { role: 'assistant', content: reply }])
-    } catch {
-      setMessages(prev => [
-        ...prev,
-        { role: 'assistant', content: 'Bağlantı hatası oluştu. Lütfen tekrar deneyin.' },
-      ])
     } finally {
       setLoading(false)
     }
@@ -106,12 +84,21 @@ export default function ChatBot() {
                 <div className="text-white font-bold">Klinik Asistanı</div>
                 <div className="text-white/70 text-xs flex items-center gap-1">
                   <span className="w-1.5 h-1.5 bg-green-400 rounded-full inline-block" />
-                  Online • Hemen yanıt verir
+                  Otomatik bilgi • Tanı yerine geçmez
                 </div>
               </div>
+              <a
+                href={`https://wa.me/${WHATSAPP}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-auto text-white/80 hover:text-white transition-colors"
+                aria-label="WhatsApp ile iletişime geç"
+              >
+                <FaWhatsapp className="text-xl" />
+              </a>
               <button
                 onClick={() => setOpen(false)}
-                className="ml-auto text-white/70 hover:text-white transition-colors"
+                className="text-white/70 hover:text-white transition-colors"
                 aria-label="Kapat"
               >
                 <FaTimes />
@@ -156,10 +143,10 @@ export default function ChatBot() {
             {/* Hızlı sorular */}
             {messages.length === 1 && (
               <div className="px-4 pb-2 flex flex-wrap gap-2">
-                {['Fiyatlar nedir?', 'Nasıl randevu alırım?', 'Bel ağrısı tedavisi yapıyor musunuz?'].map(q => (
+                {quickQuestions.map(q => (
                   <button
                     key={q}
-                    onClick={() => { setInput(q); setTimeout(send, 50) }}
+                    onClick={() => send(q)}
                     className="text-xs bg-primary/10 text-primary px-3 py-1.5 rounded-full hover:bg-primary hover:text-white transition-all"
                   >
                     {q}
@@ -169,7 +156,7 @@ export default function ChatBot() {
             )}
 
             {/* Input */}
-            <div className="p-4 bg-white border-t border-gray-100 flex gap-2">
+            <div className="p-4 bg-white border-t border-gray-100 flex gap-2 items-center">
               <input
                 value={input}
                 onChange={e => setInput(e.target.value)}
@@ -177,8 +164,17 @@ export default function ChatBot() {
                 placeholder="Mesajınız..."
                 className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
               />
+              <a
+                href={`https://wa.me/${WHATSAPP}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-green-500 text-white rounded-xl flex items-center justify-center hover:bg-green-600 transition-all"
+                aria-label="WhatsApp ile yaz"
+              >
+                <FaWhatsapp className="text-sm" />
+              </a>
               <button
-                onClick={send}
+                onClick={() => send()}
                 disabled={loading || !input.trim()}
                 aria-label="Gönder"
                 className="w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center hover:bg-accent transition-all disabled:opacity-40"
@@ -186,6 +182,7 @@ export default function ChatBot() {
                 <FaPaperPlane className="text-sm" />
               </button>
             </div>
+            <p className="px-4 pb-3 text-center text-xs text-gray-400">Kişisel veya hassas sağlık bilgisi paylaşmayın.</p>
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,20 +1,21 @@
 import { motion } from 'framer-motion'
 import { FaGraduationCap, FaAward, FaStar, FaTv, FaUniversity, FaDumbbell } from 'react-icons/fa'
+import LightboxImage from '../components/LightboxImage'
 
 // ── ÖNEMLI: Vite'ta src/assets içindeki resimler import ile yüklenmeli ──
 // Aşağıdaki import'ları kendi dosya adlarınla eşleştir
-import imgProfil     from '../assets/about/profil.jpg'
-import imgHakkimda   from '../assets/about/hakkimda.JPG'
-import imgTv1        from '../assets/about/tv1.jpg'
-import imgTv2        from '../assets/about/tv2.jpg'
-import imgTv3        from '../assets/about/tv3.JPG'
-import imgTv4        from '../assets/about/tv4.jpg'
-import imgSertifika1 from '../assets/about/sertifika1.JPG'
-import imgSertifika2 from '../assets/about/sertifika2.jpg'
-import imgYonetim    from '../assets/about/ftryonetim1.JPG'
-import imgFb1        from '../assets/about/fb.JPG'
-import imgFb2        from '../assets/about/fb2.JPG'
-import imgKariyer    from '../assets/about/kariyer.JPG'
+import imgProfil     from '../assets/about/optimized/profil.jpg'
+import imgHakkimda   from '../assets/about/optimized/hakkimda.jpg'
+import imgTv1        from '../assets/about/optimized/tv1.jpg'
+import imgTv2        from '../assets/about/optimized/tv2.jpg'
+import imgTv3        from '../assets/about/optimized/tv3.jpg'
+import imgTv4        from '../assets/about/optimized/tv4.jpg'
+import imgSertifika1 from '../assets/about/optimized/sertifika1.jpg'
+import imgSertifika2 from '../assets/about/optimized/sertifika2.jpg'
+import imgYonetim    from '../assets/about/optimized/ftryonetim1.jpg'
+import imgFb1        from '../assets/about/optimized/fb.jpg'
+import imgFb2        from '../assets/about/optimized/fb2.jpg'
+import imgKariyer    from '../assets/about/optimized/kariyer.jpg'
 
 const certifications = [
   'APPI International Clinical Mat Pilates Certification',
@@ -35,26 +36,10 @@ const expertise = [
   { icon: '🧠', title: 'Nörolojik Rehabilitasyon', desc: 'İnme, Parkinson, MS, denge ve yürüme bozuklukları' },
 ]
 
-// Galeri: tüm 12 resim
-const galleryItems = [
-  { src: imgTv1,        label: 'TV Programı' },
-  { src: imgTv2,        label: 'Canlı Yayın' },
-  { src: imgTv3,        label: 'Egzersiz Eğitimi' },
-  { src: imgTv4,        label: 'Kanal 3 Yayını' },
-  { src: imgSertifika1, label: 'Uluslararası Sertifika' },
-  { src: imgSertifika2, label: 'APPI Sertifikası' },
-  { src: imgYonetim,    label: 'FTR Yönetim Kurulu' },
-  { src: imgFb1,        label: 'Fenerbahçe SK Stajı' },
-  { src: imgFb2,        label: 'Fenerbahçe SK' },
-  { src: imgKariyer,    label: 'Kariyer Günleri' },
-  { src: imgHakkimda,   label: 'Hakkımda' },
-  { src: imgProfil,     label: 'Hülya Yücedağ' },
-]
-
 // Güvenli resim bileşeni — hata olursa gri placeholder gösterir
 function Img({ src, alt, className }) {
   return (
-    <img
+    <LightboxImage
       src={src}
       alt={alt}
       className={className}
@@ -89,19 +74,19 @@ export default function About() {
             >
               <span className="text-primary font-bold text-sm uppercase tracking-widest">Hakkımızda</span>
               <h1 className="font-display text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
-                Uzman Fizyoterapist
+                Fizyoterapist
                 <span className="block text-primary mt-1">Hülya Yücedağ</span>
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed">
                 Ortopedik rehabilitasyon, sporcu sağlığı, manuel terapi ve klinik pilates alanlarında
-                uzmanlaşmış; ulusal ve uluslararası eğitimlerle yetkinliğini geliştirmiş sağlık profesyoneli.
+                ulusal ve uluslararası eğitimlerle gelişmiş, kişiye özel tedavi yaklaşımı sunan sağlık profesyoneli.
               </p>
 
               <div className="grid grid-cols-3 gap-4 pt-2">
                 {[
                   { num: '5+', label: 'Yıllık Deneyim' },
                   { num: '500+', label: 'Mutlu Hasta' },
-                  { num: '17+', label: 'Uzmanlık Alanı' },
+                  { num: '17+', label: 'Hizmet Alanı' },
                 ].map(s => (
                   <div key={s.label} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center">
                     <div className="font-display text-3xl font-bold text-primary">{s.num}</div>
@@ -123,52 +108,47 @@ export default function About() {
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7, delay: 0.15 }}
-              className="relative h-[500px]"
+              className="relative h-[360px] w-full max-w-[420px] mx-auto"
             >
-              {/* Ana büyük resim: profil — tam ortada */}
-              <div className="absolute left-1/2 -translate-x-1/2 top-0 w-64 h-[420px] rounded-[28px] overflow-hidden shadow-2xl">
-                <Img src={imgProfil} alt="Hülya Yücedağ" className="w-full h-full object-cover object-top" />
+              <div className="absolute left-1/2 -translate-x-1/2 top-0 w-52 h-[300px] rounded-[24px] overflow-hidden shadow-2xl">
+                <Img src={imgProfil} alt="Hülya Yücedağ" className="w-full h-full object-contain object-top" />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent" />
               </div>
 
-              {/* Sağ üst: tv1 */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
-                className="absolute top-6 right-0 w-36 h-28 rounded-2xl overflow-hidden shadow-xl border-4 border-white"
+                className="absolute top-6 right-0 w-28 h-24 rounded-2xl overflow-hidden shadow-xl border-4 border-white"
               >
-                <Img src={imgTv1} alt="TV Programı" className="w-full h-full object-cover" />
+                <Img src={imgTv1} alt="TV Programı" className="w-full h-full object-contain" />
               </motion.div>
 
-              {/* Sol alt: hakkimda */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
-                className="absolute bottom-10 left-0 w-40 h-28 rounded-2xl overflow-hidden shadow-xl border-4 border-white"
+                className="absolute bottom-8 left-0 w-32 h-22 rounded-2xl overflow-hidden shadow-xl border-4 border-white"
               >
-                <Img src={imgHakkimda} alt="Hakkımda" className="w-full h-full object-cover" />
+                <Img src={imgHakkimda} alt="Hakkımda" className="w-full h-full object-contain" />
               </motion.div>
 
-              {/* Sağ alt: kariyer */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 }}
-                className="absolute bottom-10 right-0 w-36 h-28 rounded-2xl overflow-hidden shadow-xl border-4 border-white"
+                className="absolute bottom-8 right-0 w-28 h-22 rounded-2xl overflow-hidden shadow-xl border-4 border-white"
               >
-                <Img src={imgKariyer} alt="Kariyer Günleri" className="w-full h-full object-cover" />
+                <Img src={imgKariyer} alt="Kariyer Günleri" className="w-full h-full object-contain" />
               </motion.div>
 
-              {/* Floating badge */}
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{ repeat: Infinity, duration: 3.5 }}
-                className="absolute bottom-44 -right-2 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-2 border border-gray-100 z-10"
+                className="absolute bottom-40 -right-2 bg-white rounded-2xl shadow-xl px-3 py-2 flex items-center gap-2 border border-gray-100 z-10"
               >
-                <FaStar className="text-yellow-400" />
-                <span className="font-bold text-gray-800 text-sm">4.9 Google Puanı</span>
+                <FaStar className="text-yellow-400 text-sm" />
+                <span className="font-bold text-gray-800 text-xs">4.9 Google Puanı</span>
               </motion.div>
             </motion.div>
           </div>
@@ -201,7 +181,15 @@ export default function About() {
                   color: 'bg-green-50 text-green-600',
                   title: 'Mustafa Kemal Üniversitesi',
                   sub: 'Fizyoterapi ve Rehabilitasyon Lisans',
-                  desc: "Dikey Geçiş ile yerleşti. ABD Texas Dallas College'dan kabul alarak uluslararası eğitimi eş zamanlı sürdürdü.",
+                  desc: "ABD Texas Dallas College'dan kabul alarak uluslararası eğitimi eş zamanlı sürdürdü.",
+                  imgs: [],
+                },
+                {
+                  icon: <FaUniversity />,
+                  color: 'bg-teal-50 text-teal-600',
+                  title: 'Hacettepe Üniversitesi',
+                  sub: 'Ortopedik, Nörolojik & Sporcu Rehabilitasyonu',
+                  desc: 'Pelvik taban, manuel terapi ve omurga sağlığı alanlarında kapsamlı klinik deneyim kazandı.',
                   imgs: [],
                 },
                 {
@@ -213,14 +201,7 @@ export default function About() {
                   // 1 yönetim resmi — tam genişlik
                   imgs: [{ src: imgYonetim, alt: 'FTR Yönetim Kurulu', wide: true }],
                 },
-                {
-                  icon: <FaUniversity />,
-                  color: 'bg-teal-50 text-teal-600',
-                  title: 'Hacettepe Üniversitesi',
-                  sub: 'Ortopedik, Nörolojik & Sporcu Rehabilitasyonu',
-                  desc: 'Pelvik taban, manuel terapi ve omurga sağlığı alanlarında kapsamlı klinik deneyim kazandı.',
-                  imgs: [],
-                },
+                
                 {
                   icon: <FaDumbbell />,
                   color: 'bg-orange-50 text-orange-600',
@@ -267,14 +248,14 @@ export default function About() {
                     {/* Resimler */}
                     {item.imgs.length === 1 && item.imgs[0].wide && (
                       <div className="mt-3 rounded-xl overflow-hidden h-36 w-full">
-                        <Img src={item.imgs[0].src} alt={item.imgs[0].alt} className="w-full h-full object-cover" />
+                        <Img src={item.imgs[0].src} alt={item.imgs[0].alt} className="w-full h-full object-contain" />
                       </div>
                     )}
                     {item.imgs.length === 2 && (
                       <div className="mt-3 grid grid-cols-2 gap-2">
                         {item.imgs.map(img => (
                           <div key={img.alt} className="rounded-xl overflow-hidden h-28">
-                            <Img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
+                            <Img src={img.src} alt={img.alt} className="w-full h-full object-contain" />
                           </div>
                         ))}
                       </div>
@@ -283,7 +264,7 @@ export default function About() {
                       <div className="mt-3 grid grid-cols-2 gap-2">
                         {item.imgs.map(img => (
                           <div key={img.alt} className="rounded-xl overflow-hidden h-24">
-                            <Img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
+                            <Img src={img.src} alt={img.alt} className="w-full h-full object-contain" />
                           </div>
                         ))}
                       </div>
@@ -303,7 +284,7 @@ export default function About() {
                 viewport={{ once: true }}
                 className="rounded-3xl overflow-hidden shadow-lg h-56 bg-primary/5"
               >
-                <Img src={imgSertifika1} alt="Uluslararası Sertifika" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                <Img src={imgSertifika1} alt="Uluslararası Sertifika" className="w-full h-full object-contain hover:scale-105 transition-transform duration-500" />
               </motion.div>
 
               {/* Sertifika 2 */}
@@ -314,7 +295,7 @@ export default function About() {
                 viewport={{ once: true }}
                 className="rounded-3xl overflow-hidden shadow-lg h-56 bg-primary/5"
               >
-                <Img src={imgSertifika2} alt="APPI Sertifikası" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                <Img src={imgSertifika2} alt="APPI Sertifikası" className="w-full h-full object-contain hover:scale-105 transition-transform duration-500" />
               </motion.div>
 
               {/* Sertifikalar listesi */}
@@ -336,14 +317,14 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── UZMANLIK ALANLARI ────────────────────────────────── */}
+      {/* ── HİZMET ALANLARI ────────────────────────────────── */}
       <section className="py-20 bg-gradient-to-br from-primary/5 via-white to-accent/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <span className="text-primary font-bold text-sm uppercase tracking-widest">Uzmanlık</span>
-            <h2 className="font-display text-4xl font-bold text-gray-800 mt-2">Uzmanlık Alanları</h2>
+            <span className="text-primary font-bold text-sm uppercase tracking-widest">Hizmet</span>
+            <h2 className="font-display text-4xl font-bold text-gray-800 mt-2">Hizmet Alanları</h2>
             <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-              Her biri kanıta dayalı yaklaşımlarla desteklenen 17+ uzmanlık alanında hizmet.
+              Her biri kanıta dayalı yaklaşımlarla desteklenen 17+ hizmet alanında bakım sunuyoruz.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -359,41 +340,6 @@ export default function About() {
                 <div className="text-3xl mb-3">{item.icon}</div>
                 <h3 className="font-bold text-gray-800 mb-2">{item.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── GALERİ ───────────────────────────────────────────── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <span className="text-primary font-bold text-sm uppercase tracking-widest">Fotoğraflar</span>
-            <h2 className="font-display text-4xl font-bold text-gray-800 mt-2">Galeri</h2>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-              Klinik, TV programları, sertifikalar ve etkinliklerden kareler.
-            </p>
-          </div>
-
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
-            {galleryItems.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                viewport={{ once: true }}
-                className="break-inside-avoid relative group rounded-2xl overflow-hidden shadow-md bg-primary/5 min-h-[120px]"
-              >
-                <Img
-                  src={item.src}
-                  alt={item.label}
-                  className="w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-primary/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                  <span className="text-white font-semibold text-sm px-4 py-3">{item.label}</span>
-                </div>
               </motion.div>
             ))}
           </div>

@@ -1,9 +1,22 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import LightboxImage from '../components/LightboxImage'
+import {
+  FaBone,
+  FaHandsHelping,
+  FaDumbbell,
+  FaRunning,
+  FaHeadset,
+  FaTooth,
+  FaHeartbeat,
+  FaUserMd,
+} from 'react-icons/fa'
 
 const services = [
   {
-    icon: '🦴',
+    icon: <FaBone className="text-primary" />,
+    image: '/1.jpg',
+    imageAlt: 'Fizyoterapi kliniğinde tedavi alanı',
     title: 'Fizik Tedavi & Klinik Pilates',
     desc: 'Kas-iskelet sistemi rahatsızlıklarını sadece geçici olarak bastırmak yerine, altta yatan biyomekanik problemleri çözmeyi hedefleyen kapsamlı rehabilitasyon.',
     details: ['Core stabilizasyon', 'Segmental stabilizasyon', 'Nefes koordinasyonu', 'Fonksiyonel egzersizler'],
@@ -11,7 +24,9 @@ const services = [
     duration: '4-6 hafta içinde belirgin fark',
   },
   {
-    icon: '🤲',
+    icon: <FaHandsHelping className="text-primary" />,
+    image: '/ak.jpg',
+    imageAlt: 'Fizyoterapist eşliğinde manuel uygulama',
     title: 'Manuel Terapi',
     desc: 'Kas ve eklem problemlerine doğrudan temasla müdahale edilen ileri fizyoterapi teknikleri.',
     details: ['Eklem mobilizasyonu', 'Manipülasyon', 'Myofasyal release', 'Trigger point'],
@@ -19,7 +34,9 @@ const services = [
     duration: 'Hızlı sonuç — genelde 2-4 seans',
   },
   {
-    icon: '🏋️',
+    icon: <FaDumbbell className="text-primary" />,
+    image: '/fiziktedaviklinikpilates.jpg',
+    imageAlt: 'Reformer ve klinik egzersiz uygulaması',
     title: 'Reformer Klinik Egzersiz',
     desc: 'Özel reformer cihazı üzerinde kontrollü direnç ve doğru hareket paternleriyle yapılan ileri rehabilitasyon.',
     details: ['Kapalı kinetik zincir', 'Core stabilizasyon', 'Eksantrik kontrol', 'Denge & koordinasyon'],
@@ -27,7 +44,9 @@ const services = [
     duration: '6-12 seans belirgin gelişme',
   },
   {
-    icon: '⚡',
+    icon: <FaRunning className="text-primary" />,
+    image: '/ad.jpg',
+    imageAlt: 'Sporcu sağlığı ekibi',
     title: 'Ortopedik & Sporcu Rehabilitasyonu',
     desc: 'Yaralanmalar sonrası bilimsel yöntemlerle güvenli spora dönüş ve yeniden sakatlanma önleme.',
     details: ['ACL, menisküs, rotator cuff', 'Plyometrik antrenman', 'Propriosepsiyon', 'Performans testleri'],
@@ -35,7 +54,9 @@ const services = [
     duration: 'Yaralanmaya göre değişir',
   },
   {
-    icon: '🧠',
+    icon: <FaHeadset className="text-primary" />,
+    image: '/ag.jpg',
+    imageAlt: 'Omuz ve sırt bölgesi egzersizi',
     title: 'Migren & Baş Ağrısı',
     desc: 'Boyun kasları ve omurga dizilimi kaynaklı baş ağrılarında ilaç bağımlılığını azaltan fizyoterapi.',
     details: ['Manuel terapi', 'Trigger point tedavisi', 'Postür düzeltme', 'Nefes & gevşeme'],
@@ -43,15 +64,19 @@ const services = [
     duration: '6-10 seans belirgin sonuç',
   },
   {
-    icon: '😬',
+    icon: <FaTooth className="text-primary" />,
+    image: '/be.jpg',
+    imageAlt: 'Fizyoterapist eşliğinde üst gövde egzersizi',
     title: 'Bruksizm & TME Problemleri',
-    desc: 'Diş sıkma ve çene eklem problemlerinde kas ve eklem seviyesinde uzman müdahale.',
+    desc: 'Diş sıkma ve çene eklem problemlerinde kas ve eklem seviyesinde kişiye özel müdahale.',
     details: ['Çene mobilizasyonu', 'Trigger point', 'İç/dış kas gevşetme', 'Boyun destek tedavisi'],
     who: 'Diş sıkma, çene ağrısı, TME rahatsızlığı',
     duration: 'Birkaç seansta belirgin rahatlama',
   },
   {
-    icon: '💆',
+    icon: <FaHeartbeat className="text-primary" />,
+    image: '/ak.jpg',
+    imageAlt: 'Fizyoterapist eşliğinde yumuşak doku uygulaması',
     title: 'Recovery & Medikal Masaj',
     desc: 'Kasların yenilenmesini hızlandıran, dolaşımı artıran profesyonel terapi.',
     details: ['Derin doku masajı', 'Spor masajı', 'Lenfatik drenaj', 'Fasya açma'],
@@ -59,7 +84,9 @@ const services = [
     duration: 'Tek seansta rahatlama',
   },
   {
-    icon: '🌸',
+    icon: <FaUserMd className="text-primary" />,
+    image: '/bc.jpg',
+    imageAlt: 'Fizyoterapist eşliğinde klinik uygulama',
     title: 'Kadın & Erkek Sağlığı',
     desc: 'Pelvik taban kasları ve hormonal süreçlere yönelik özel fizyoterapi programı.',
     details: ['Pelvik taban egzersizleri', 'Core stabilizasyon', 'Nefes teknikleri', 'Postür düzeltme'],
@@ -67,7 +94,9 @@ const services = [
     duration: '4-8 hafta belirgin gelişme',
   },
   {
-    icon: '🦷',
+    icon: <FaBone className="text-primary" />,
+    image: '/aa.jpg',
+    imageAlt: 'Fizyoterapi egzersiz alanı',
     title: 'Omurga Sağlığı & Skolyoz',
     desc: 'Skolyoz, kifoz ve duruş bozukluklarını bilimsel egzersizlerle kontrol altına alma.',
     details: ['Schroth yöntemi', 'Üç boyutlu solunum', 'Postür eğitimi', 'Kas dengeleme'],
@@ -84,7 +113,7 @@ export default function Services() {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-primary font-bold text-sm uppercase tracking-widest">Uzmanlık Alanlarımız</span>
+            <span className="text-primary font-bold text-sm uppercase tracking-widest">Hizmet Alanlarımız</span>
             <h1 className="font-display text-5xl font-bold text-gray-800 mt-2">Hizmetlerimiz</h1>
             <p className="text-gray-500 mt-4 max-w-2xl mx-auto text-lg">
               Her hasta özel, her program kişiye özgü. Bilimsel yaklaşımla kalıcı sonuçlar sunuyoruz.
@@ -102,7 +131,17 @@ export default function Services() {
                 onClick={() => setActive(active === i ? null : i)}
                 className="bg-light border border-gray-100 rounded-2xl p-6 cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1"
               >
-                <div className="text-4xl mb-3">{s.icon}</div>
+                <div className="mb-5 flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-xl bg-slate-100">
+                  <LightboxImage
+                    src={s.image}
+                    alt={s.imageAlt}
+                    width="600"
+                    height="450"
+                    loading="lazy"
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-2xl">{s.icon}</div>
                 <h3 className="font-bold text-gray-800 text-lg mb-2">{s.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed mb-4">{s.desc}</p>
 

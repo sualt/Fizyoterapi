@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import LightboxImage from '../../components/LightboxImage'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -39,7 +40,7 @@ export default function ManuelTerapi() {
           </div>
 
           <div className="mt-6 text-sm text-gray-500">
-            ✓ İlaçsız tedavi • ✓ Uzman fizyoterapist • ✓ Hızlı sonuç
+            ✓ İlaçsız tedavi • ✓ Kişiye özel yaklaşım • ✓ Hızlı sonuç
           </div>
         </motion.div>
 
@@ -48,9 +49,10 @@ export default function ManuelTerapi() {
           animate={{ opacity: 1, scale: 1 }}
           className="rounded-3xl overflow-hidden shadow-2xl"
         >
-          <img
-            src="/images/manuel-hero.jpg"
-            className="w-full h-[420px] object-cover"
+          <LightboxImage
+            src="/ak.jpg"
+            alt="Manuel terapi değerlendirmesi"
+            className="aspect-[4/3] max-h-[420px] w-full bg-slate-50 object-contain"
           />
         </motion.div>
       </section>
@@ -104,14 +106,6 @@ export default function ManuelTerapi() {
             </motion.div>
           ))}
         </motion.div>
-      </section>
-
-      {/* IMAGE BANNER */}
-      <section className="mt-28">
-        <img
-          src="/images/manuel-banner.jpg"
-          className="w-full h-[320px] object-cover"
-        />
       </section>
 
       {/* TREATMENT APPROACH */}
@@ -190,17 +184,17 @@ export default function ManuelTerapi() {
       </section>
 
       {/* IMAGE GRID */}
-      <section className="max-w-6xl mx-auto px-4 mt-28 grid md:grid-cols-3 gap-4">
+      <section className="max-w-6xl mx-auto px-4 mt-28 grid md:grid-cols-2 gap-4">
         {[
-          "/images/manuel1.jpg",
-          "/images/manuel2.jpg",
-          "/images/manuel3.jpg"
+          "/bc.jpg",
+          "/be.jpg"
         ].map((img, i) => (
-          <motion.img
+          <LightboxImage
             key={i}
-            whileHover={{ scale: 1.05 }}
-            className="h-72 w-full object-cover rounded-2xl shadow"
+            className="aspect-[4/3] w-full rounded-xl bg-slate-50 object-contain"
             src={img}
+            alt="Manuel terapi uygulaması"
+            loading="lazy"
           />
         ))}
       </section>
@@ -224,7 +218,7 @@ export default function ManuelTerapi() {
             },
             {
               q: "Kimler uygulayabilir?",
-              a: "Manuel terapi mutlaka uzman fizyoterapist tarafından uygulanmalıdır; yanlış uygulama zarar verebilir."
+              a: "Manuel terapi mutlaka deneyimli ve uygun ölçüde uygulanmalıdır; yanlış uygulama zarar verebilir."
             }
           ].map((f, i) => (
             <div key={i} className="p-6 border rounded-2xl hover:shadow-md transition">

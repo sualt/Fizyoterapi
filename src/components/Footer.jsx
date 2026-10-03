@@ -1,15 +1,6 @@
 import { Link } from 'react-router-dom'
-import { FaPhone, FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaHeart, FaEnvelope } from 'react-icons/fa'
-import { PHONE, WHATSAPP, EMAIL, INSTAGRAM, ADDRESS, WORKING_HOURS } from '../config'
-
-const galleryThumbs = [
-  '/src/assets/gallery/foto1.jpg',
-  '/src/assets/gallery/foto2.jpg',
-  '/src/assets/gallery/foto3.jpg',
-  '/src/assets/gallery/foto4.jpg',
-  '/src/assets/gallery/foto5.jpg',
-  '/src/assets/gallery/foto6.jpg',
-]
+import { FaPhone, FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaHeart, FaEnvelope, FaShieldAlt } from 'react-icons/fa'
+import { PHONE, WHATSAPP, EMAIL, INSTAGRAM, ADDRESS, WORKING_HOURS, MAPS_EMBED } from '../config'
 
 export default function Footer() {
   return (
@@ -64,7 +55,6 @@ export default function Footer() {
               { to: '/', label: 'Anasayfa' },
               { to: '/hakkimizda', label: 'Hakkımızda' },
               { to: '/hizmetler', label: 'Hizmetler' },
-              { to: '/galeri', label: 'Galeri' },
               { to: '/randevu', label: 'Randevu Al' },
               { to: '/iletisim', label: 'İletişim' },
             ].map(l => (
@@ -112,7 +102,7 @@ export default function Footer() {
             <div className="font-bold text-white mb-2">Çalışma Saatleri</div>
             <div className="flex justify-between">
               <span>Pzt – Cmt</span>
-              <span className="text-primary font-semibold">09:00 – 19:00</span>
+              <span className="text-primary font-semibold">{WORKING_HOURS.weekdays.replace('Pzt – Cmt', '').trim()}</span>
             </div>
             <div className="flex justify-between mt-1">
               <span>Pazar</span>
@@ -121,28 +111,26 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Kolon 4: Resim Galerisi */}
         <div>
-          <h4 className="font-bold text-white mb-4">Resim Galerisi</h4>
-          <div className="grid grid-cols-3 gap-1.5">
-            {galleryThumbs.map((src, i) => (
-              <Link key={i} to="/galeri">
-                <div className="aspect-square rounded-lg overflow-hidden group cursor-pointer">
-                  <img
-                    src={src}
-                    alt={`Galeri ${i + 1}`}
-                    className="w-full h-full object-cover group-hover:scale-110 group-hover:brightness-110 transition-all duration-300"
-                  />
-                </div>
-              </Link>
-            ))}
+          <h4 className="font-bold text-white mb-4">Konum</h4>
+          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`} target="_blank" rel="noopener noreferrer" className="mb-3 inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white">
+            <FaMapMarkerAlt className="text-primary" /> Yol tarifi al
+          </a>
+          <div className="aspect-[4/3] max-h-64 overflow-hidden rounded-xl border border-white/10 bg-white/5">
+            <iframe
+              src={MAPS_EMBED}
+              title="Ankara kliniği harita konumu"
+              width="100%"
+              height="100%"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              style={{ border: 0 }}
+            />
           </div>
-          <Link
-            to="/galeri"
-            className="block text-center text-xs text-primary hover:text-white transition-colors mt-3 font-semibold"
-          >
-            Tüm Galeriyi Gör →
-          </Link>
+          <p className="mt-3 flex items-start gap-2 text-xs leading-relaxed text-gray-400">
+            <FaShieldAlt className="mt-0.5 shrink-0 text-primary" />
+            Randevu formu bilgileri bu sitede saklanmaz; talep WhatsApp üzerinden gönderilir. Hassas sağlık bilgisi paylaşmayın.
+          </p>
         </div>
 
       </div>

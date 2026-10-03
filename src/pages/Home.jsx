@@ -1,141 +1,88 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { FaCheckCircle, FaStar, FaInstagram, FaArrowRight, FaPhone, FaWhatsapp, FaCalendarCheck } from 'react-icons/fa'
+import {
+  FaCheckCircle,
+  FaStar,
+  FaInstagram,
+  FaArrowRight,
+  FaPhone,
+  FaWhatsapp,
+  FaBone,
+  FaHandsHelping,
+  FaDumbbell,
+  FaRunning,
+  FaHeadset,
+  FaTooth,
+  FaHeartbeat,
+  FaUserMd,
+} from 'react-icons/fa'
 import heroImage from '../assets/hero.jpeg'
+import { getPublicReviews, readReviews, submitReview } from '../utils/reviews'
+import { supabase } from '../utils/supabase'
 import {
   PHONE,
   WHATSAPP,
   INSTAGRAM,
-  WORKING_HOURS
 } from '../config'
+import QuickAppointmentForm from '../components/QuickAppointmentForm'
 
 const services = [
-  { icon: '🦴', title: 'Fizik Tedavi & Klinik Pilates', desc: 'Kas-iskelet problemlerini kökten çözen kişiye özel rehabilitasyon.' },
-  { icon: '🤲', title: 'Manuel Terapi', desc: 'İlaçsız, doğrudan temas ile hızlı ağrı giderimi.' },
-  { icon: '🏋️', title: 'Reformer Klinik Egzersiz', desc: 'Kontrollü direnç ile dengeli ve güvenli kas güçlendirme.' },
-  { icon: '⚡', title: 'Sporcu Rehabilitasyonu', desc: 'Yaralanma sonrası güvenli ve hızlı spora dönüş.' },
-  { icon: '🧠', title: 'Migren & Baş Ağrısı', desc: 'Boyun kökenli baş ağrılarında ilaçsız kalıcı çözüm.' },
-  { icon: '😬', title: 'Bruksizm & TME', desc: 'Çene ağrısı ve diş sıkma problemlerinde uzman tedavi.' },
-  { icon: '💆', title: 'Recovery & Medikal Masaj', desc: 'Kas toparlanmasını hızlandıran profesyonel masaj teknikleri.' },
-  { icon: '🌸', title: 'Kadın & Erkek Sağlığı', desc: 'Pelvik taban ve core kaslarını güçlendiren özel program.' },
+  { icon: <FaBone className="text-primary" />, title: 'Fizik Tedavi & Klinik Pilates', desc: 'Kas-iskelet problemlerini kökten çözen kişiye özel rehabilitasyon.' },
+  { icon: <FaHandsHelping className="text-primary" />, title: 'Manuel Terapi', desc: 'İlaçsız, doğrudan temas ile hızlı ağrı giderimi.' },
+  { icon: <FaDumbbell className="text-primary" />, title: 'Reformer Klinik Egzersiz', desc: 'Kontrollü direnç ile dengeli ve güvenli kas güçlendirme.' },
+  { icon: <FaRunning className="text-primary" />, title: 'Sporcu Rehabilitasyonu', desc: 'Yaralanma sonrası güvenli ve hızlı spora dönüş.' },
+  { icon: <FaHeadset className="text-primary" />, title: 'Migren & Baş Ağrısı', desc: 'Boyun kökenli baş ağrılarında kalıcı çözüm odaklı yaklaşım.' },
+  { icon: <FaTooth className="text-primary" />, title: 'Bruksizm & TME', desc: 'Çene ağrısı ve diş sıkma problemlerinde tedavi planı.' },
+  { icon: <FaHeartbeat className="text-primary" />, title: 'Recovery & Medikal Masaj', desc: 'Kas toparlanmasını hızlandıran profesyonel masaj teknikleri.' },
+  { icon: <FaUserMd className="text-primary" />, title: 'Kadın & Erkek Sağlığı', desc: 'Pelvik taban ve core kaslarını güçlendiren özel program.' },
 ]
 
 const stats = [
   { num: '500+', label: 'Mutlu Hasta' },
   { num: '5+', label: 'Yıllık Tecrübe' },
-  { num: '9', label: 'Uzmanlık Alanı' },
+  { num: '9', label: 'Hizmet Alanı' },
   { num: '4.9', label: 'Google Puanı ⭐' },
 ]
 
-const testimonials = [
-  { name: 'Ayşe K.', text: 'Bel fıtığım için geldim. 8 seansta inanılmaz iyileştim. Kesinlikle tavsiye ediyorum!', rating: 5 },
-  { name: 'Mehmet T.', text: 'Boyun tutulması ve migren şikayetlerimde çok büyük iyileşme oldu.', rating: 5 },
-  { name: 'Zeynep A.', text: 'Reformer seansları sayesinde duruşum düzeldi, sırt ağrım geçti.', rating: 5 },
-]
-
-
-
-/* ── Mini Randevu Formu ─────────────────────────────────────── */
-function MiniAppointmentForm() {
-  const [form, setForm] = useState({ name: '', phone: '', complaint: '' })
-  const [sent, setSent] = useState(false)
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const msg = `Randevu Talebi:\nAd Soyad: ${form.name}\nTelefon: ${form.phone}\nŞikayet: ${form.complaint}`
-    const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`
-    window.open(url, '_blank')
-    setSent(true)
-  }
-
-  if (sent) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="bg-white rounded-3xl shadow-xl p-10 text-center max-w-xl mx-auto"
-      >
-        <div className="text-5xl mb-3">✅</div>
-        <h3 className="text-xl font-bold text-gray-800 mb-2">WhatsApp'a Yönlendiriliyorsunuz</h3>
-        <p className="text-gray-500 text-sm">En kısa sürede dönüş yapılacaktır.</p>
-        <button onClick={() => setSent(false)} className="mt-4 text-primary text-sm font-semibold hover:underline">
-          Yeni Talep Gönder
-        </button>
-      </motion.div>
-    )
-  }
-
-  return (
-    <motion.form
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      onSubmit={handleSubmit}
-      className="bg-white rounded-3xl shadow-xl p-8 max-w-3xl mx-auto"
-    >
-      <h3 className="font-display text-2xl font-bold text-gray-800 mb-6 text-center">Hızlı Randevu Formu</h3>
-      <div className="grid sm:grid-cols-3 gap-4">
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1.5">Ad Soyad *</label>
-          <input
-            required
-            value={form.name}
-            onChange={e => setForm({ ...form, name: e.target.value })}
-            placeholder="Adınız"
-            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1.5">Telefon *</label>
-          <input
-            required
-            type="tel"
-            value={form.phone}
-            onChange={e => setForm({ ...form, phone: e.target.value })}
-            placeholder="0532 XXX XX XX"
-            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1.5">Şikayet *</label>
-          <select
-            required
-            value={form.complaint}
-            onChange={e => setForm({ ...form, complaint: e.target.value })}
-            className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-          >
-            <option value="">Seçiniz</option>
-            <option>Bel Ağrısı / Fıtık</option>
-            <option>Boyun Ağrısı</option>
-            <option>Skolyoz</option>
-            <option>Migren & Baş Ağrısı</option>
-            <option>Sporcu Yaralanması</option>
-            <option>Çene / TME Problemi</option>
-            <option>Omuz Problemleri</option>
-            <option>Klinik Pilates / Reformer</option>
-            <option>Diğer</option>
-          </select>
-        </div>
-      </div>
-      <button
-        type="submit"
-        className="mt-6 w-full bg-primary text-white py-4 rounded-xl font-bold text-base hover:bg-accent transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-      >
-        <FaWhatsapp className="text-lg" /> WhatsApp ile Randevu Al
-      </button>
-      <p className="text-xs text-center text-gray-400 mt-3">
-        Detaylı randevu için{' '}
-        <Link to="/randevu" className="text-primary font-semibold hover:underline">
-          tıklayın →
-        </Link>
-      </p>
-    </motion.form>
-  )
-}
-
 /* ── Ana Sayfa ──────────────────────────────────────────────── */
 export default function Home() {
+  const [reviews, setReviews] = useState(readReviews)
+  const [reviewForm, setReviewForm] = useState({ name: '', text: '', rating: 5 })
+  const [reviewSent, setReviewSent] = useState(false)
+  const [reviewError, setReviewError] = useState('')
+
+  useEffect(() => {
+    let isMounted = true
+    getPublicReviews()
+      .then(publicReviews => {
+        if (isMounted) setReviews(publicReviews)
+      })
+      .catch(() => {
+        if (isMounted) setReviews([])
+      })
+
+    return () => { isMounted = false }
+  }, [])
+
+  const handleReviewSubmit = async e => {
+    e.preventDefault()
+    const review = {
+      ...reviewForm,
+      name: reviewForm.name.trim(),
+      text: reviewForm.text.trim(),
+    }
+
+    try {
+      await submitReview(review)
+      setReviewForm({ name: '', text: '', rating: 5 })
+      setReviewSent(true)
+      setReviewError('')
+    } catch {
+      setReviewError('Yorum şu anda gönderilemedi. Lütfen daha sonra tekrar deneyin.')
+    }
+  }
+
   return (
     <main className="pt-16">
 
@@ -154,13 +101,13 @@ export default function Home() {
             className="space-y-6"
           >
             <span className="inline-block bg-primary text-white font-semibold px-4 py-2 rounded-full text-sm shadow-md">
-              Uzman Fizyoterapi Kliniği
+              Fizyoterapi Kliniği
             </span>
 
             <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-tight text-slate-900">
               Ağrısız Bir Yaşam İçin
               <span className="block text-primary mt-2">
-                Bütüncül Yaklaşım
+                Kişiye Özel Tedavi
               </span>
             </h1>
 
@@ -177,14 +124,11 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Hero CTA butonları */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-1">
-              <Link
-                to="/randevu"
-                className="flex items-center justify-center gap-2 bg-primary text-white px-7 py-4 rounded-2xl font-bold shadow-lg hover:bg-accent hover:scale-105 transition-all"
-              >
-                <FaCalendarCheck /> Ücretsiz Randevu Al
-              </Link>
+            <div className="pt-2">
+              <QuickAppointmentForm compact />
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 to="/hizmetler"
                 className="flex items-center justify-center gap-2 border-2 border-primary text-primary px-7 py-4 rounded-2xl font-bold hover:bg-primary hover:text-white transition-all"
@@ -222,7 +166,10 @@ export default function Home() {
               <img
                 src={heroImage}
                 alt="Fizyoterapist"
-                className="relative w-full h-[700px] object-cover rounded-[40px] shadow-2xl"
+                width="550"
+                height="600"
+                fetchPriority="high"
+                className="relative w-full max-h-[600px] aspect-[11/12] object-contain rounded-[32px] bg-white shadow-xl"
               />
             </div>
 
@@ -231,7 +178,7 @@ export default function Home() {
               transition={{ repeat: Infinity, duration: 3 }}
               className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3"
             >
-              <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg">⭐</div>
+              <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-lg"><FaStar className="text-primary" /></div>
               <div>
                 <div className="font-bold text-base text-slate-900">500+ Mutlu Hasta</div>
                 <div className="text-xs text-slate-500">%98 Memnuniyet Oranı</div>
@@ -260,81 +207,69 @@ export default function Home() {
       </section>
 
       {/* HİZMETLER */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <span className="text-primary font-bold text-sm uppercase tracking-widest">Neler Yapıyoruz</span>
-            <h2 className="font-display text-4xl font-bold text-gray-800 mt-2">Hizmetlerimiz</h2>
-            <p className="text-gray-500 mt-3 max-w-xl mx-auto">Her hasta özel, her program kişiye özgü. Bilimsel yaklaşımla kalıcı sonuçlar.</p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((s, i) => (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.07 }}
-                viewport={{ once: true }}
-                className="group bg-secondary border border-gray-100 rounded-2xl p-6 hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer"
-              >
-                <div className="text-4xl mb-4">{s.icon}</div>
-                <h3 className="font-bold text-gray-800 group-hover:text-white mb-2 leading-snug">{s.title}</h3>
-                <p className="text-sm text-gray-500 group-hover:text-white/80 leading-relaxed">{s.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Link to="/hizmetler" className="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-full font-bold hover:bg-accent transition-all shadow-md hover:shadow-lg">
-              Tüm Hizmetleri Gör <FaArrowRight />
-            </Link>
-          </div>
-        </div>
-      </section>
+<section className="py-24 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
+  {/* Arka plan dekoratif elementler */}
+  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
-      {/* RANDEVU SECTION */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 via-white to-accent/5">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <span className="text-primary font-bold text-sm uppercase tracking-widest">Hemen Başlayın</span>
-            <h2 className="font-display text-4xl font-bold text-gray-800 mt-2">Randevu Al</h2>
-            <p className="text-gray-500 mt-3">İlk adımı atın — en kısa sürede sizi arayalım.</p>
-          </div>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="text-center mb-16">
+      <span className="inline-block text-primary font-bold text-xs uppercase tracking-[0.2em] bg-primary/10 px-4 py-2 rounded-full mb-4">Neler Yapıyoruz</span>
+      <h2 className="font-display text-5xl font-bold text-gray-900 mt-2">Hizmetlerimiz</h2>
+      <p className="text-gray-400 mt-4 max-w-xl mx-auto text-lg">Her hasta özel, her program kişiye özgü. Bilimsel yaklaşımla kalıcı sonuçlar.</p>
+    </div>
 
-          {/* İletişim kartları */}
-          <div className="grid sm:grid-cols-3 gap-4 mb-8">
-            <a href={`tel:${PHONE}`}
-              className="flex items-center gap-4 bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all group">
-              <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center text-xl group-hover:bg-primary group-hover:text-white transition-all flex-shrink-0">
-                <FaPhone />
-              </div>
-              <div>
-                <div className="text-xs text-gray-400 font-bold uppercase tracking-wide">Ara</div>
-                <div className="font-bold text-gray-800 text-sm">{PHONE}</div>
-              </div>
-            </a>
-            <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-4 bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all group">
-              <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-xl group-hover:bg-green-500 group-hover:text-white transition-all flex-shrink-0">
-                <FaWhatsapp />
-              </div>
-              <div>
-                <div className="text-xs text-gray-400 font-bold uppercase tracking-wide">WhatsApp</div>
-                <div className="font-bold text-gray-800 text-sm">Mesaj Gönder</div>
-              </div>
-            </a>
-            <div className="flex items-center gap-4 bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-              <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center text-xl flex-shrink-0">🕐</div>
-              <div>
-                <div className="text-xs text-gray-400 font-bold uppercase tracking-wide">Çalışma Saatleri</div>
-                <div className="font-bold text-gray-800 text-sm"> {WORKING_HOURS.weekdays}</div>
+    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {services.map((s, i) => (
+        <motion.div
+          key={s.title}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.07, duration: 0.5 }}
+          viewport={{ once: true }}
+          whileHover={{ y: -8, transition: { duration: 0.2 } }}
+          className="group relative bg-white rounded-3xl p-7 cursor-pointer overflow-hidden
+            border border-gray-100 hover:border-transparent
+            shadow-[0_2px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.12)]
+            transition-all duration-300"
+        >
+          {/* Hover'da gradient arka plan */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
+
+          {/* İçerik */}
+          <div className="relative z-10">
+            <div className="mb-4 flex items-center justify-start">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-xl transition-all duration-300 group-hover:bg-white/15">
+                {s.icon}
               </div>
             </div>
+            <h3 className="font-bold text-gray-900 group-hover:text-white text-base mb-2 leading-snug transition-colors duration-300">
+              {s.title}
+            </h3>
+            <p className="text-sm text-gray-400 group-hover:text-white/80 leading-relaxed transition-colors duration-300">
+              {s.desc}
+            </p>
           </div>
 
-          {/* Mini form */}
-          <MiniAppointmentForm />
-        </div>
-      </section>
+          {/* Ok ikonu - hover'da görünür */}
+          <div className="relative z-10 mt-5 flex items-center gap-1 text-primary group-hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 translate-x-[-10px] group-hover:translate-x-0">
+            <span className="text-xs font-bold">Detaylar</span>
+            <FaArrowRight className="text-xs" />
+          </div>
+
+          {/* Köşe dekorasyon */}
+          <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-primary/5 group-hover:bg-white/10 rounded-full transition-colors duration-300" />
+          <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/3 group-hover:bg-white/5 rounded-full transition-colors duration-300" />
+        </motion.div>
+      ))}
+    </div>
+
+    <div className="text-center mt-12">
+      <Link to="/hizmetler" className="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-full font-bold hover:bg-accent transition-all shadow-md hover:shadow-xl hover:-translate-y-1">
+        Tüm Hizmetleri Gör <FaArrowRight />
+      </Link>
+    </div>
+  </div>
+</section>
 
       {/* INSTAGRAM */}
       <section className="py-20 bg-secondary">
@@ -352,12 +287,11 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { src: 'https://www.instagram.com/reel/DQTmoMuini_/embed', title: 'Reel 1' },
-              { src: 'https://www.instagram.com/reel/DUpwf5YClAg/embed', title: 'Reel 2' },
-              { src: 'https://www.instagram.com/reel/DV8I1_dCnvw/embed', title: 'Reel 3' },
-              { src: 'https://www.instagram.com/p/DS0ZH_ejIL7/embed', title: 'Post 4' },
+              { src: 'https://www.instagram.com/p/DcgCPHQO8VC/embed', title: 'Instagram gönderisi 1' },
+              { src: 'https://www.instagram.com/p/CyGb14gIFpR/embed', title: 'Instagram gönderisi 2' },
+              { src: 'https://www.instagram.com/p/Dd_isw8uBmC/embed', title: 'Instagram gönderisi 3' },
             ].map(item => (
               <iframe
                 key={item.src}
@@ -367,6 +301,8 @@ export default function Home() {
                 frameBorder="0"
                 scrolling="no"
                 allow="encrypted-media"
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
                 title={item.title}
               />
             ))}
@@ -389,9 +325,9 @@ export default function Home() {
             <h2 className="font-display text-4xl font-bold text-gray-800 mt-2">Yorumlar</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
+            {reviews.filter(review => review.status === 'approved').map((review, i) => (
               <motion.div
-                key={t.name}
+                key={review.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.15 }}
@@ -399,18 +335,72 @@ export default function Home() {
                 className="bg-secondary rounded-2xl p-6 border border-primary/10"
               >
                 <div className="flex text-yellow-400 mb-3">
-                  {[...Array(t.rating)].map((_, j) => <FaStar key={j} />)}
+                  {[...Array(review.rating)].map((_, j) => <FaStar key={j} />)}
                 </div>
-                <p className="text-gray-700 italic leading-relaxed mb-4">&ldquo;{t.text}&rdquo;</p>
+                <p className="text-gray-700 italic leading-relaxed mb-4">&ldquo;{review.text}&rdquo;</p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold">
-                    {t.name[0]}
+                    {review.name[0]}
                   </div>
-                  <span className="font-bold text-gray-800">{t.name}</span>
+                  <span className="font-bold text-gray-800">{review.name}</span>
                 </div>
               </motion.div>
             ))}
           </div>
+
+          {supabase ? <form onSubmit={handleReviewSubmit} className="max-w-2xl mx-auto mt-12 border-t border-gray-100 pt-10">
+            <h3 className="font-display text-2xl font-bold text-gray-800 mb-6 text-center">Deneyiminizi paylaşın</h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <label className="block text-sm font-semibold text-gray-700">
+                Adınız
+                <input
+                  required
+                  maxLength={60}
+                  value={reviewForm.name}
+                  onChange={e => setReviewForm({ ...reviewForm, name: e.target.value })}
+                  className="mt-2 w-full border border-gray-200 rounded-xl px-4 py-3 font-normal focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                  placeholder="Adınız"
+                />
+              </label>
+              <div>
+                <span className="block text-sm font-semibold text-gray-700 mb-2">Puanınız</span>
+                <div className="flex gap-2" role="group" aria-label="Yıldız puanı seçin">
+                  {[1, 2, 3, 4, 5].map(rating => (
+                    <button
+                      key={rating}
+                      type="button"
+                      onClick={() => setReviewForm({ ...reviewForm, rating })}
+                      aria-label={`${rating} yıldız`}
+                      aria-pressed={reviewForm.rating === rating}
+                      className="text-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+                    >
+                      <FaStar className={rating <= reviewForm.rating ? 'text-yellow-400' : 'text-gray-200'} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <label className="block text-sm font-semibold text-gray-700 mt-4">
+              Yorumunuz
+              <textarea
+                required
+                maxLength={500}
+                rows={4}
+                value={reviewForm.text}
+                onChange={e => setReviewForm({ ...reviewForm, text: e.target.value })}
+                className="mt-2 w-full border border-gray-200 rounded-xl px-4 py-3 font-normal resize-y focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                placeholder="Deneyiminizi yazın..."
+              />
+            </label>
+            <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <p className="text-sm text-gray-500" role="status">
+                {reviewError || (reviewSent ? 'Yorumunuz inceleme için kaydedildi.' : 'Yorumunuz site sahibi tarafından incelendikten sonra yayınlanır.')}
+              </p>
+              <button type="submit" className="w-full sm:w-auto bg-primary text-white px-6 py-3 rounded-xl font-bold hover:bg-accent transition-colors">
+                Yorumu Gönder
+              </button>
+            </div>
+          </form> : <p className="mx-auto mt-12 max-w-2xl border-t border-gray-100 pt-8 text-center text-sm text-gray-500">Yorum gönderimi şu anda kullanılamıyor.</p>}
         </div>
       </section>
 
